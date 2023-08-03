@@ -1,24 +1,43 @@
 // Import liraries
-import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Button, SafeAreaView } from "react-native";
 import { logout } from "../utils/auth";
+import { getAllPosts } from "../utils/postRequests";
+import PostList from "../components/PostList";
 
 // Create a component
 const Home = ({ route, navigation }) => {
+const [posts , setPosts ] = useState([]);
+
   const handleLogout = () => {
+    // alksjd alskdj 
     logout()
-      .then(() => navigation.navigate("login"))
+      .then(() => navigation.navigate("login")) 
       .catch((err) => {
         alert("Some Error occurred\n" + err.message);
         console.error(err);
       });
   };
 
+  useEffect(()=>{ 
+    const getPosts  =async ()=> { 
+      try {
+        const res = await getAllPosts();
+        setPosts([...res.data.data]); 
+      } catch (error) {
+        console.log(error); 
+        alert(error.message); 
+      }
+    }
+    getPosts(); 
+  },[]);
+
+  
+
   return (
-    <View style={styles.container}>
-      <Text>Home</Text>
-      <Button title="Logout" onPress={handleLogout} />
-    </View>
+    <SafeAreaView style={styles.container}>
+     <PostList posts={posts} />
+    </SafeAreaView>
   );
 };
 
@@ -26,8 +45,6 @@ const Home = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 
