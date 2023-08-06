@@ -1,13 +1,5 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
-import {
-  Alert,
-  Button,
-  Modal,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import Login from "./app/auth/login";
 import Register from "./app/auth/register";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -15,7 +7,8 @@ import Home from "./app/pages/home";
 import HeaderRight from "./app/components/HeaderRight";
 import HeaderLeft from "./app/components/HeaderLeft";
 import { useState } from "react";
-import { createPost, fetchAllPosts } from "./app/utils/postRequests";
+import { createPost, fetchAllPosts } from "./app/utils/httpRequest";
+import Post from "./app/pages/post";
 
 export default function App() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -40,8 +33,8 @@ export default function App() {
       createPost({ title, body }).then((res) => {
         hideModal();
         fetchAllPosts();
-        setTitle(''); 
-        setBody('')
+        setTitle("");
+        setBody("");
       });
     }
   };
@@ -91,8 +84,14 @@ export default function App() {
             headerTitle: () => <Text style={styles.title}>Feed</Text>,
             headerRight: () => <HeaderRight />,
             headerTitleAlign: "center",
-            headerBackVisible: false, // This removes the back arrow
+            headerBackVisible: false, // This remove the back arrow
           }}
+        />
+
+        <Stack.Screen
+          name="posts"
+          component={Post}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

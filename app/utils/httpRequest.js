@@ -27,7 +27,20 @@ export async function createPost(body) {
 }
 
 export async function getALlPosts() {
+  await fetchAllPosts();
   const posts = await AsyncStorage.getItem("posts");
- 
   return JSON.parse(posts);
+}
+
+export async function getPostById(id) { 
+  const config = await getConfig() ; 
+  const endpoint = baseUrl + '/posts/'  + id  ; 
+ return  await axios.get(endpoint , config) ; 
+}
+
+export async function getUserById(id) { 
+  const config = await getConfig() ; 
+  const endpoint = baseUrl + '/users/'  + id  ; 
+ const res  =   await axios.get(endpoint , config) ; 
+ return res.data.data ;
 }

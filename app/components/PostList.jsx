@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import PostItem from './PostItem';
+import { useNavigation } from '@react-navigation/native';
 
 const PostList = ({ posts  , handleOnRefresh}) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+const navigation = useNavigation();
+const onItemPress = (post) =>  { 
+  navigation.navigate('posts' , { 
+    post : post
+  } )
+}
   return (
     <View style={styles.container}>
-      <FlatList
+      <FlatList 
         contentContainerStyle={styles.list}
         data={posts}
-        renderItem={({ item }) => <PostItem post={item} />}
+        renderItem={({ item }) => <PostItem post={item} handleOnPress={onItemPress} />}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

@@ -3,9 +3,10 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 // create a component
-const PostItem = ({post}) => {
+const PostItem = ({post  , handleOnPress  }) => {
+   
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={()=>handleOnPress(post)}>
             <Text style={{fontSize:24}}>{post.title}</Text>
             <Text>{post.body}</Text>
         </TouchableOpacity>

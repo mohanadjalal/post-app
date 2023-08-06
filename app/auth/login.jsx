@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "../utils/auth";
+import { getItem } from "../utils/storage";
 
 const Login = ({ route, navigation }) => {
   useEffect(() => {
@@ -24,7 +25,7 @@ const Login = ({ route, navigation }) => {
   }, [navigation]);
 
   useEffect(() => {
-    AsyncStorage.getItem("user").then((value) => {
+    getItem("user").then((value) => {
       if (value) navigation.navigate("home");
     });
   });
