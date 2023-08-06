@@ -30,7 +30,7 @@ export async function logout() {
 export async function register(body) {
   const config = {
     headers: {
-      "Content-Type": "application/json", // For JSON data, you can set the appropriate content type
+      "Content-Type": "application/json",  
     },
   };
 

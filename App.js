@@ -1,5 +1,13 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import {
+  Alert,
+  Button,
+  Modal,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import Login from "./app/auth/login";
 import Register from "./app/auth/register";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,6 +15,7 @@ import Home from "./app/pages/home";
 import HeaderRight from "./app/components/HeaderRight";
 import HeaderLeft from "./app/components/HeaderLeft";
 import { useState } from "react";
+import { createPost, fetchAllPosts } from "./app/utils/postRequests";
 
 export default function App() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -20,6 +29,19 @@ export default function App() {
 
   const hideModal = () => {
     setModalVisible(false);
+  };
+
+  const addPost = () => {
+    if (!title || !title.trim()) {
+      alert("Title is required!");
+    } else if (!body || !body.trim()) {
+      alert("Body is required!");
+    } else {
+      createPost({ title, body }).then((res) => {
+        hideModal();
+        fetchAllPosts();``
+      });
+    }
   };
 
   return (
@@ -43,7 +65,7 @@ export default function App() {
             />
             <View style={styles.modalButtons}>
               <Button title="Cancel" onPress={hideModal} color="gray" />
-              <Button title="Add" onPress={() => alert("added")} />
+              <Button title="Add" onPress={addPost} />
             </View>
           </View>
         </View>

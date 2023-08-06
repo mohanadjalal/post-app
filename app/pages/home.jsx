@@ -2,41 +2,46 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Button, SafeAreaView } from "react-native";
 import { logout } from "../utils/auth";
-import { getAllPosts } from "../utils/postRequests";
+import { fetchAllPosts, getALlPosts } from "../utils/postRequests";
 import PostList from "../components/PostList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Create a component
 const Home = ({ route, navigation }) => {
-const [posts , setPosts ] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const handleLogout = () => {
-    // alksjd alskdj 
+    // alksjd alskdj
     logout()
-      .then(() => navigation.navigate("login")) 
+      .then(() => navigation.navigate("login"))
       .catch((err) => {
         alert("Some Error occurred\n" + err.message);
         console.error(err);
       });
   };
 
-  useEffect(()=>{ 
-    const getPosts  =async ()=> { 
-      try {
-        const res = await getAllPosts();
-        setPosts([...res.data.data]); 
-      } catch (error) {
-        console.log(error); 
-        alert(error.message); 
-      }
-    }
-    getPosts(); 
-  },[]);
 
-  
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const res = await getALlPosts();
+        console.log('====================================');
+        console.log(res);
+        console.log('====================================');
+        setPosts(res);
+      } catch (error) {
+        console.log(error);
+        alert(error.message);
+      }
+    };
+
+    getPosts();
+   
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-     <PostList posts={posts} />
+      <PostList posts={posts} />
     </SafeAreaView>
   );
 };
