@@ -19,29 +19,25 @@ const Home = ({ route, navigation }) => {
         console.error(err);
       });
   };
+  const getPosts = async () => {
+    try {
+      const res = await getALlPosts();
+      setPosts(res);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
+  };
+  
 
 
   useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const res = await getALlPosts();
-        console.log('====================================');
-        console.log(res);
-        console.log('====================================');
-        setPosts(res);
-      } catch (error) {
-        console.log(error);
-        alert(error.message);
-      }
-    };
-
     getPosts();
-   
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <PostList posts={posts} />
+      <PostList posts={posts} handleOnRefresh={getPosts}/>
     </SafeAreaView>
   );
 };

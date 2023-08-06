@@ -1,8 +1,10 @@
-import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import PostItem from './PostItem';
 
-const PostList = ({ posts }) => {
+const PostList = ({ posts  , handleOnRefresh}) => {
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -12,6 +14,9 @@ const PostList = ({ posts }) => {
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleOnRefresh} />
+        }
       />
     </View>
   );

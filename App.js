@@ -39,7 +39,9 @@ export default function App() {
     } else {
       createPost({ title, body }).then((res) => {
         hideModal();
-        fetchAllPosts();``
+        fetchAllPosts();
+        setTitle(''); 
+        setBody('')
       });
     }
   };
