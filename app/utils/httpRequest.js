@@ -32,15 +32,27 @@ export async function getALlPosts() {
   return JSON.parse(posts);
 }
 
-export async function getPostById(id) { 
-  const config = await getConfig() ; 
-  const endpoint = baseUrl + '/posts/'  + id  ; 
- return  await axios.get(endpoint , config) ; 
+export async function getPostById(id) {
+  const config = await getConfig();
+  const endpoint = baseUrl + "/posts/" + id;
+  return await axios.get(endpoint, config);
 }
 
-export async function getUserById(id) { 
-  const config = await getConfig() ; 
-  const endpoint = baseUrl + '/users/'  + id  ; 
- const res  =   await axios.get(endpoint , config) ; 
- return res.data.data ;
+export async function getUserById(id) {
+  const config = await getConfig();
+  const endpoint = baseUrl + "/users/" + id;
+  const res = await axios.get(endpoint, config);
+  return res.data.data;
+}
+
+export async function deletePost(id) {
+  const config = await getConfig();
+  const endpoint = baseUrl + "/posts/" + id;
+  await axios.delete(endpoint, config);
+}
+
+export async function updatePost(id, body) {
+  const config = await getConfig();
+  const endpoint = baseUrl + "/users/" + id;
+  await axios.patch(endpoint, body, config);
 }
