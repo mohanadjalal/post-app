@@ -35,7 +35,7 @@ export async function getALlPosts() {
 export async function getPostById(id) {
   const config = await getConfig();
   const endpoint = baseUrl + "/posts/" + id;
-  return await axios.get(endpoint, config);
+  return (await axios.get(endpoint, config)).data.data;
 }
 
 export async function getUserById(id) {
@@ -53,6 +53,6 @@ export async function deletePost(id) {
 
 export async function updatePost(id, body) {
   const config = await getConfig();
-  const endpoint = baseUrl + "/users/" + id;
+  const endpoint = baseUrl + "/posts/" + id;
   await axios.patch(endpoint, body, config);
 }

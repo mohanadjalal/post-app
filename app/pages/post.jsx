@@ -2,18 +2,27 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { getUserById, deletePost, fetchAllPosts } from "../utils/httpRequest";
+import {
+  getUserById,
+  deletePost,
+  fetchAllPosts,
+  updatePost,
+  getPostById,
+} from "../utils/httpRequest";
 import { getItem } from "../utils/storage";
 import Btn from "../components/common/Btn";
+import EditModal from "../components/editModal";
 
 function Post({ route, navigation }) {
-  const { user_id, title, body, created_at, updated_at, id } =
-    route.params.post;
+  const { user_id, id } = route.params.post;
   const [owner, setOwner] = useState(null);
   const [user, setUser] = useState(null);
+  const [post, setPost] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchUser = async () => {
+      setPost(route.params.post);
       const res = await getUserById(user_id);
       setOwner(res);
       const result = await getItem("user");
@@ -21,6 +30,10 @@ function Post({ route, navigation }) {
     };
     fetchUser();
   }, []);
+
+  const getPost = (id) => {
+    getPostById(id).then((res) => setPost(res));
+  };
   const isOwner = () => user?.id === owner?.id;
 
   const deleteThisPost = () => {
@@ -38,43 +51,61 @@ function Post({ route, navigation }) {
       { text: "OK", onPress: deleteThisPost },
     ]);
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}> {owner?.name} </Text>
-        <Text style={styles.email}> {owner?.email} </Text>
-        <Text style={styles.postTitle}>{title}</Text>
-        <Text style={styles.postBody}>{body}</Text>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.dateText}> {created_at}</Text>
-      </View>
-
-      {isOwner() ? (
-        <View style={styles.btnGroup}>
-          <Btn
-            onPress={createTwoButtonAlert}
-            text="DELETE"
-            style={styles.deleteBtn}
-            pressedStyle={styles.deleteBtnPressed}
-            textStyle={{
-              color: "white",
-            }}
-          />
-          <Btn
-            onPress={() => alert("edit btn ")}
-            text="EDIT"
-            style={styles.editBtn}
-            pressedStyle={styles.editBtnPressed}
-            textStyle={{
-              color: "black",
-            }}
-          />
+  const hideModal = () => {
+    setShowModal(false);
+  };
+  const update = (newPost) => {
+    updatePost(id, newPost).then((res) => {
+      hideModal();
+      getPost(id)
+    });
+  };
+  if (post)
+    return (
+      <SafeAreaView style={styles.container}>
+        <View>
+          <Text style={styles.title}> {owner?.name} </Text>
+          <Text style={styles.email}> {owner?.email} </Text>
+          <Text style={styles.postTitle}>{post?.title}</Text>
+          <Text style={styles.postBody}>{post?.body}</Text>
         </View>
-      ) : null}
-    </SafeAreaView>
-  );
+
+        <View style={styles.footer}>
+          <Text style={styles.dateText}> {post?.created_at}</Text>
+        </View>
+
+        {isOwner() ? (
+          <View style={styles.btnGroup}>
+            <Btn
+              onPress={createTwoButtonAlert}
+              text="DELETE"
+              style={styles.deleteBtn}
+              pressedStyle={styles.deleteBtnPressed}
+              textStyle={{
+                color: "white",
+              }}
+            />
+            <Btn
+              onPress={() => setShowModal(true)}
+              text="EDIT"
+              style={styles.editBtn}
+              pressedStyle={styles.editBtnPressed}
+              textStyle={{
+                color: "black",
+              }}
+            />
+          </View>
+        ) : null}
+
+        <EditModal
+          isModalVisible={showModal}
+          hideModal={hideModal}
+          submit={update}
+          title={post?.title}
+          body={post?.body}
+        />
+      </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({

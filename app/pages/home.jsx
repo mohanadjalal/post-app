@@ -12,7 +12,7 @@ const Home = ({ route, navigation }) => {
     try {
       const res = await getALlPosts();
       setPosts(res);
-    } catch (error) {
+     } catch (error) {
       console.log(error);
       alert(error.message);
     }
