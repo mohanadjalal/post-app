@@ -22,7 +22,7 @@ function Post({ route, navigation }) {
 
   useEffect(() => {
     fetchUser = async () => {
-      setPost(route.params.post);
+      await getPost(id)
       const res = await getUserById(user_id);
       setOwner(res);
       const result = await getItem("user");
@@ -32,7 +32,9 @@ function Post({ route, navigation }) {
   }, []);
 
   const getPost = (id) => {
-    getPostById(id).then((res) => setPost(res));
+    getPostById(id).then((res) =>{console.log('====================================');
+    console.log(res);
+    console.log('===================================='); setPost(res)});
   };
   const isOwner = () => user?.id === owner?.id;
 
@@ -58,6 +60,7 @@ function Post({ route, navigation }) {
     updatePost(id, newPost).then((res) => {
       hideModal();
       getPost(id)
+
     });
   };
   if (post)
