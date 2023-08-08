@@ -1,11 +1,46 @@
 //import liraries
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { getItem } from "../utils/storage";
 
 // create a component
-const CommentItem = ({ index, comment }) => {
+const CommentItem = ({ index, comment, onChange }) => {
+  const [owner, setOwner] = useState(false);
+  useEffect(() => {
+    getItem("user").then((res) => setOwner(comment.user.id === res.id));
+  }, []);
+
+  const onLongPress = () => {
+    if (owner) {
+      Alert.alert(
+        "Delete comment",
+        "Are you sure you want to delete the comment  ? ",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+          },
+          {
+            text: "Delete",
+            onPress: () =>
+              delComment(comment.id)
+                .then(() => onChange())
+                .catch((err) => alert(err)),
+          },
+        ],
+        { cancelable: true }
+      );
+    } else {
+      Alert.alert(
+        comment.user.name,
+        `by:  ${comment.user.email} \n at: ${comment.created_at}`,
+        [{ text: "Ok" }]
+      );
+    }
+  };
   return (
     <TouchableOpacity
+      onLongPress={onLongPress}
       style={[
         styles.container,
         index % 2 === 0 ? styles.evenItem : styles.oddItem,
@@ -13,6 +48,7 @@ const CommentItem = ({ index, comment }) => {
     >
       <Text style={styles.userName}>{comment.user?.name}</Text>
       <Text style={styles.commentText}>{comment.text}</Text>
+      <Text>{comment.created_at}</Text>
     </TouchableOpacity>
   );
 };

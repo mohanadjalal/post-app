@@ -5,16 +5,16 @@ import CommentItem from "./commentItem";
 import CommentFooter from "./common/commentListHeader";
 
 // create a component
-const CommentList = ({ comments ,  onAddComment }) => {
+const CommentList = ({ comments ,  onAddComment , onChange }) => {
   return (
     <View style={styles.container}>
       <FlatList
         data={comments}
-        renderItem={({ item }) => <CommentItem comment={item} />}
+        renderItem={({ item }) => <CommentItem comment={item} onChange={onChange} />}
         keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListHeaderComponent={() => (
-          <CommentFooter onAddComment={onAddComment} />
+          <CommentFooter onAddComment={onAddComment}  />
         )}
       />
     </View>

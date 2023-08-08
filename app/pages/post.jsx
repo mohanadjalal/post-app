@@ -82,7 +82,7 @@ function Post({ route, navigation }) {
             <Text style={styles.title}> {owner?.name} </Text>
             <Text style={styles.email}> {owner?.email} </Text>
             <Text style={styles.postTitle}>{post?.title}</Text>
-            <Text style={styles.postBody}>{post?.body} lorem100 </Text>
+            <Text style={styles.postBody}>{post?.body}  </Text>
           </View>
 
           <View style={styles.footer}>
@@ -120,7 +120,7 @@ function Post({ route, navigation }) {
             body={post?.body}
           />
         </ScrollView>
-        <CommentList comments={comments} onAddComment={addComment} />
+        <CommentList comments={comments} onAddComment={addComment} onChange={getPost} />
       </SafeAreaView>
     );
 }

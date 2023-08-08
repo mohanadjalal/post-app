@@ -57,17 +57,21 @@ export async function updatePost(id, body) {
   await axios.patch(endpoint, body, config);
 }
 
-
-export async function getCommentsByPostId(id){
+export async function getCommentsByPostId(id) {
   const config = await getConfig();
   const endpoint = baseUrl + "/comments/" + id;
   const res = await axios.get(endpoint, config);
-  return res.data.data
+  return res.data.data;
 }
 
-export  async function postComment(body) { 
+export async function postComment(body) {
   const config = await getConfig();
   const endpoint = baseUrl + "/comments";
-  await axios.post(endpoint,body ,  config);
-  
+  await axios.post(endpoint, body, config);
+}
+
+export async function delComment(id) {
+  const config = await getConfig();
+  const endpoint = baseUrl + "/comments/" + id;
+  await axios.delete(endpoint, config);
 }
