@@ -1,6 +1,6 @@
 // import libraries
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   getUserById,
@@ -22,7 +22,7 @@ function Post({ route, navigation }) {
 
   useEffect(() => {
     fetchUser = async () => {
-      await getPost(id)
+      await getPost(id);
       const res = await getUserById(user_id);
       setOwner(res);
       const result = await getItem("user");
@@ -32,9 +32,9 @@ function Post({ route, navigation }) {
   }, []);
 
   const getPost = (id) => {
-    getPostById(id).then((res) =>{console.log('====================================');
-    console.log(res);
-    console.log('===================================='); setPost(res)});
+    getPostById(id).then((res) => {
+      setPost(res);
+    });
   };
   const isOwner = () => user?.id === owner?.id;
 
@@ -59,13 +59,13 @@ function Post({ route, navigation }) {
   const update = (newPost) => {
     updatePost(id, newPost).then((res) => {
       hideModal();
-      getPost(id)
-
+      getPost(id);
     });
   };
   if (post)
     return (
       <SafeAreaView style={styles.container}>
+        <ScrollView>
         <View>
           <Text style={styles.title}> {owner?.name} </Text>
           <Text style={styles.email}> {owner?.email} </Text>
@@ -107,6 +107,8 @@ function Post({ route, navigation }) {
           title={post?.title}
           body={post?.body}
         />
+         </ScrollView>
+
       </SafeAreaView>
     );
 }
@@ -118,6 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "start",
     backgroundColor: "#1abc9c",
     padding: 20,
+  
   },
   title: {
     fontSize: 32,
@@ -144,10 +147,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   footer: {
-    height: 20,
-    position: "absolute",
-    bottom: 20,
-    right: 20,
+     
   },
   email: {
     fontSize: 13,
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   btnGroup: {
     width: 80,
     position: "absolute",
-    top: 50,
+    top: 0,
     right: 5,
   },
   deleteBtnPressed: {
