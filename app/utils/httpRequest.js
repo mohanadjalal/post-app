@@ -56,3 +56,18 @@ export async function updatePost(id, body) {
   const endpoint = baseUrl + "/posts/" + id;
   await axios.patch(endpoint, body, config);
 }
+
+
+export async function getCommentsByPostId(id){
+  const config = await getConfig();
+  const endpoint = baseUrl + "/comments/" + id;
+  const res = await axios.get(endpoint, config);
+  return res.data.data
+}
+
+export  async function postComment(body) { 
+  const config = await getConfig();
+  const endpoint = baseUrl + "/comments";
+  await axios.post(endpoint,body ,  config);
+  
+}

@@ -8,10 +8,13 @@ import {
   fetchAllPosts,
   updatePost,
   getPostById,
+  getCommentsByPostId,
+  postComment,
 } from "../utils/httpRequest";
 import { getItem } from "../utils/storage";
 import Btn from "../components/common/Btn";
 import EditModal from "../components/editModal";
+import CommentList from "../components/commentList";
 
 function Post({ route, navigation }) {
   const { user_id, id } = route.params.post;
@@ -19,10 +22,11 @@ function Post({ route, navigation }) {
   const [user, setUser] = useState(null);
   const [post, setPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetchUser = async () => {
-      await getPost(id);
+      await getPost();
       const res = await getUserById(user_id);
       setOwner(res);
       const result = await getItem("user");
@@ -31,9 +35,12 @@ function Post({ route, navigation }) {
     fetchUser();
   }, []);
 
-  const getPost = (id) => {
+  const getPost = () => {
     getPostById(id).then((res) => {
       setPost(res);
+      getCommentsByPostId(id)
+        .then((res) => setComments(res))
+        .catch((err) => alert(err));
     });
   };
   const isOwner = () => user?.id === owner?.id;
@@ -62,53 +69,58 @@ function Post({ route, navigation }) {
       getPost(id);
     });
   };
+
+  const addComment = (text) => {
+    postComment({ text, post_id: id }).then((res) => getPost())
+    .catch(err=>alert(err));
+  };
   if (post)
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-        <View>
-          <Text style={styles.title}> {owner?.name} </Text>
-          <Text style={styles.email}> {owner?.email} </Text>
-          <Text style={styles.postTitle}>{post?.title}</Text>
-          <Text style={styles.postBody}>{post?.body}</Text>
-        </View>
-
-        <View style={styles.footer}>
-          <Text style={styles.dateText}> {post?.created_at}</Text>
-        </View>
-
-        {isOwner() ? (
-          <View style={styles.btnGroup}>
-            <Btn
-              onPress={createTwoButtonAlert}
-              text="DELETE"
-              style={styles.deleteBtn}
-              pressedStyle={styles.deleteBtnPressed}
-              textStyle={{
-                color: "white",
-              }}
-            />
-            <Btn
-              onPress={() => setShowModal(true)}
-              text="EDIT"
-              style={styles.editBtn}
-              pressedStyle={styles.editBtnPressed}
-              textStyle={{
-                color: "black",
-              }}
-            />
+        <ScrollView style={styles.scrollView}>
+          <View>
+            <Text style={styles.title}> {owner?.name} </Text>
+            <Text style={styles.email}> {owner?.email} </Text>
+            <Text style={styles.postTitle}>{post?.title}</Text>
+            <Text style={styles.postBody}>{post?.body} lorem100 </Text>
           </View>
-        ) : null}
 
-        <EditModal
-          isModalVisible={showModal}
-          hideModal={hideModal}
-          submit={update}
-          title={post?.title}
-          body={post?.body}
-        />
-         </ScrollView>
+          <View style={styles.footer}>
+            <Text style={styles.dateText}> {post?.created_at}</Text>
+          </View>
 
+          {isOwner() ? (
+            <View style={styles.btnGroup}>
+              <Btn
+                onPress={createTwoButtonAlert}
+                text="DELETE"
+                style={styles.deleteBtn}
+                pressedStyle={styles.deleteBtnPressed}
+                textStyle={{
+                  color: "white",
+                }}
+              />
+              <Btn
+                onPress={() => setShowModal(true)}
+                text="EDIT"
+                style={styles.editBtn}
+                pressedStyle={styles.editBtnPressed}
+                textStyle={{
+                  color: "black",
+                }}
+              />
+            </View>
+          ) : null}
+
+          <EditModal
+            isModalVisible={showModal}
+            hideModal={hideModal}
+            submit={update}
+            title={post?.title}
+            body={post?.body}
+          />
+        </ScrollView>
+        <CommentList comments={comments} onAddComment={addComment} />
       </SafeAreaView>
     );
 }
@@ -119,8 +131,10 @@ const styles = StyleSheet.create({
     justifyContent: "start",
     alignItems: "start",
     backgroundColor: "#1abc9c",
-    padding: 20,
-  
+  },
+  scrollView: {
+    marginBottom: 40,
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 32,
@@ -133,12 +147,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     marginBottom: 10,
+    textAlign: "center",
   },
   postBody: {
     fontSize: 18,
     color: "#fff",
     marginBottom: 20,
-    textAlign: "justify",
+    textAlign: "auto",
   },
   dateText: {
     fontSize: 12,
@@ -146,9 +161,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
     opacity: 0.7,
   },
-  footer: {
-     
-  },
+  footer: {},
   email: {
     fontSize: 13,
     color: "white",
@@ -157,25 +170,33 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
   },
   btnGroup: {
-    width: 80,
+    width: 120,
     position: "absolute",
+
     top: 0,
     right: 5,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "",
   },
   deleteBtnPressed: {
     backgroundColor: "#FF5733",
+    paddingHorizontal: 5,
     margin: 5,
   },
   deleteBtn: {
     backgroundColor: "#F52B00",
     margin: 5,
+    paddingHorizontal: 5,
   },
   editBtnPressed: {
     backgroundColor: "#78A9ED",
+    paddingHorizontal: 5,
     margin: 5,
   },
   editBtn: {
     backgroundColor: "#3D8EFD",
+    paddingHorizontal: 5,
     margin: 5,
   },
 });

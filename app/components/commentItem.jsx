@@ -1,28 +1,45 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 
 // create a component
-const CommentItem  = ({user}) => {
-   
-    const [owner , setOwner] = useState(null)
-    const comment = { text : 'this is the text of comments '  , id:1  } 
-    return (
-        <View style={styles.container}>
-            <Text>{owner?.name}</Text>
-            <Text>{comment.text}</Text>
-
-        </View>
-    );
+const CommentItem = ({ index, comment }) => {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.container,
+        index % 2 === 0 ? styles.evenItem : styles.oddItem,
+      ]}
+    >
+      <Text style={styles.userName}>{comment.user?.name}</Text>
+      <Text style={styles.commentText}>{comment.text}</Text>
+    </TouchableOpacity>
+  );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-    container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#2c3e50',
-    },
+  container: {
+    padding: 16,
+    borderRadius: 10,
+    marginVertical: 8,
+  },
+  evenItem: {
+    backgroundColor: "#3498db",
+  },
+  oddItem: {
+    backgroundColor: "#27ae60",
+  },
+  userName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#ffffff",
+    marginBottom: 8,
+  },
+  commentText: {
+    fontSize: 14,
+    color: "#ffffff",
+  },
 });
 
 //make this component available to the app

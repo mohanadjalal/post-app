@@ -18,7 +18,7 @@ const EditModal = ({ isModalVisible, submit, hideModal, body, title }) => {
     <Modal visible={isModalVisible} animationType="fade" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Add New Post</Text>
+          <Text style={styles.modalTitle}>Edit Post</Text>
           <TextInput
             style={styles.input}
             placeholder="Title"
@@ -34,7 +34,7 @@ const EditModal = ({ isModalVisible, submit, hideModal, body, title }) => {
           />
           <View style={styles.modalButtons}>
             <Button title="Cancel" onPress={hideModal} color="gray" />
-            <Button title="Add" onPress={edit} />
+            <Button title="Edit" onPress={edit} />
           </View>
         </View>
       </View>
