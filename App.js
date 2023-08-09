@@ -77,7 +77,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="home"
+          name="feed"
           component={Home}
           options={{
             headerLeft: () => <HeaderLeft onPress={showModal} />,
@@ -91,7 +91,12 @@ export default function App() {
         <Stack.Screen
           name="posts"
           component={Post}
-          options={{ headerShown: false }}
+          options={{ headerShown: true ,
+            title: "",
+            headerTitle: () => <Text style={styles.title}></Text>,
+            headerRight: () => <HeaderRight />,
+            headerTitleAlign: "center",
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -15,7 +15,7 @@ const Login = ({ route, navigation }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       AsyncStorage.getItem("user").then((value) => {
-        if (value) navigation.navigate("home");
+        if (value) navigation.navigate("feed");
         setLoading(false);
       });
       console.log("login Screen is focused, refreshing data...");
@@ -26,7 +26,7 @@ const Login = ({ route, navigation }) => {
 
   useEffect(() => {
     getItem("user").then((value) => {
-      if (value) navigation.navigate("home");
+      if (value) navigation.navigate("feed");
     });
   });
   const [email, setEmail] = useState("");
@@ -35,7 +35,7 @@ const Login = ({ route, navigation }) => {
 
   const handelLogin = () => {
     login(email, password)
-      .then(() => navigation.navigate("home"))
+      .then(() => navigation.navigate("feed"))
       .catch((err) => {
         alert("Some Error occurred\n" + err.message);
         console.error(err);

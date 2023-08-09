@@ -24,13 +24,15 @@ const CommentList = ({ comments ,  onAddComment , onChange }) => {
 // define your styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    
     backgroundColor: "#b1e4fc",
     paddingVertical: 16,
     paddingHorizontal: 20,
     borderTopStyle: "solid",
     borderTopColor: "#70bde0",
     borderTopWidth: 3,
+    width:'100%',
+    height:"45%"
   },
   headerText: {
     color: "#333",

@@ -8,7 +8,7 @@ const Welcome = (route, navigation) => {
     const [user, setUser] = useState(null);
     AsyncStorage.getItem('user')
     .then(res=> { 
-        if(res)  navigation.navigate('home');
+        if(res)  navigation.navigate('feed');
         else   navigation.navigate('login')
     })
     return (

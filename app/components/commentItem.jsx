@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { getItem } from "../utils/storage";
+import { delComment } from "../utils/httpRequest";
 
 // create a component
 const CommentItem = ({ index, comment, onChange }) => {

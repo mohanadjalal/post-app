@@ -47,7 +47,7 @@ function Post({ route, navigation }) {
 
   const deleteThisPost = () => {
     deletePost(id).then((res) => {
-      fetchAllPosts().then(() => navigation.navigate("home"));
+      fetchAllPosts().then(() => navigation.navigate("feed"));
     });
   };
   const createTwoButtonAlert = () =>
@@ -129,12 +129,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "start",
-    alignItems: "start",
+    alignItems: "center",
     backgroundColor: "#1abc9c",
+    width:"100%"
   },
   scrollView: {
     marginBottom: 40,
     paddingHorizontal: 20,
+    width:"100%",
+    height:'55%'
+    
   },
   title: {
     fontSize: 32,
@@ -145,19 +149,21 @@ const styles = StyleSheet.create({
   postTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: "black",
     marginBottom: 10,
     textAlign: "center",
+    marginTop:5,
   },
   postBody: {
     fontSize: 18,
-    color: "#fff",
+    color: "#000",
     marginBottom: 20,
     textAlign: "auto",
+    width:"100%",
   },
   dateText: {
     fontSize: 12,
-    color: "#fff",
+    color: "gary",
     textAlign: "right",
     opacity: 0.7,
   },
@@ -171,13 +177,12 @@ const styles = StyleSheet.create({
   },
   btnGroup: {
     width: 120,
-    position: "absolute",
-
-    top: 0,
-    right: 5,
+    position: 'absolute'  ,
+    right: 0 ,
+    top:0,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "",
+    alignSelf:"flex-end"
   },
   deleteBtnPressed: {
     backgroundColor: "#FF5733",
@@ -198,6 +203,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#3D8EFD",
     paddingHorizontal: 5,
     margin: 5,
+    
   },
 });
 
