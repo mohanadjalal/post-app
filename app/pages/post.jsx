@@ -77,7 +77,9 @@ function Post({ route, navigation }) {
   if (post)
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
+        <ScrollView style={styles.scrollView} 
+        
+        >
           <View>
             <Text style={styles.title}> {owner?.name} </Text>
             <Text style={styles.email}> {owner?.email} </Text>

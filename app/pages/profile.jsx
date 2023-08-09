@@ -1,12 +1,20 @@
 //import liraries
-import React, { Component, useEffect, useState } from "react";
-import { SafeAreaView, Text, StyleSheet, View, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import {} from "react-native-safe-area-context";
 import { user } from "../utils/auth";
 import { getUserById } from "../utils/httpRequest";
 
 import avatar from "../../assets/avatar.webp";
 import PostList from "../components/PostList";
+import Waiting from "../components/common/waiting";
 
 // create a component
 const Profile = () => {
@@ -40,6 +48,7 @@ const Profile = () => {
         <PostList handleOnRefresh={getUser} posts={profile.posts} />
       </SafeAreaView>
     );
+  else return <Waiting />;
 };
 
 // define your styles
