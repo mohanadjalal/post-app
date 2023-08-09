@@ -5,12 +5,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  Pressable,
   Modal,
   SafeAreaView,
 } from "react-native";
 
 import iconImage from "../../assets/profile-icon.png";
+import btnImage from "../../assets/profile.webp";
 import { getItem } from "../utils/storage";
 import { logout } from "../utils/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -35,6 +35,11 @@ const HeaderRight = () => {
       });
   };
 
+  const profile=()=> { 
+    setModalVisible(false);
+    navigation.navigate('profile')
+  }
+
   return (
     <>
       <TouchableOpacity
@@ -56,16 +61,25 @@ const HeaderRight = () => {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{user?.name}</Text>
 
-            <Pressable style={styles.button} onPress={handleLogout}>
+            <TouchableOpacity style={styles.button} onPress={handleLogout}>
               <Text style={styles.textStyle}>Logout</Text>
-            </Pressable>
+            </TouchableOpacity>
 
-            <Pressable
+            <TouchableOpacity
+              style={styles.button}
+              onPress={ profile}
+            >
+              <Image source={btnImage} style={styles.btnImage} />
+              <Text style={styles.textStyle}>Profile</Text>
+
+            </TouchableOpacity>
+
+            <TouchableOpacity
               style={styles.button}
               onPress={() => setModalVisible(!modalVisible)}
             >
               <Text style={styles.textStyle}>Back</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </Modal>
@@ -116,12 +130,23 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 200,
     marginBottom: 10,
+    display:'flex' , 
+    flexDirection:'row',
+    alignItems: "center" ,
+    justifyContent:'center',
+    alignSelf:"center"
   },
   textStyle: {
     color: "#fff",
     fontWeight: "bold",
     textAlign: "center",
   },
+  btnImage:{
+    width: 30 , 
+    height:30,
+    borderRadius:30,
+    marginHorizontal:5
+  }
 });
 
 export default HeaderRight;

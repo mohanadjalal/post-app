@@ -9,6 +9,7 @@ import HeaderLeft from "./app/components/HeaderLeft";
 import { useState } from "react";
 import { createPost, fetchAllPosts } from "./app/utils/httpRequest";
 import Post from "./app/pages/post";
+import Profile from "./app/pages/profile";
 
 export default function App() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -91,7 +92,19 @@ export default function App() {
         <Stack.Screen
           name="posts"
           component={Post}
-          options={{ headerShown: true ,
+          options={{
+            headerShown: true,
+            title: "",
+            headerTitle: () => <Text style={styles.title}></Text>,
+            headerRight: () => <HeaderRight />,
+            headerTitleAlign: "center",
+          }}
+        />
+        <Stack.Screen
+          name="profile"
+          component={Profile}
+          options={{
+            headerShown: true,
             title: "",
             headerTitle: () => <Text style={styles.title}></Text>,
             headerRight: () => <HeaderRight />,

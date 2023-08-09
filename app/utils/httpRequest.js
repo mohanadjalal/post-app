@@ -75,3 +75,4 @@ export async function delComment(id) {
   const endpoint = baseUrl + "/comments/" + id;
   await axios.delete(endpoint, config);
 }
+ 
